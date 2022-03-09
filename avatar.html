@@ -1,0 +1,188 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>gfe avatar</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            text-align: center;
+        }
+
+        .container {
+            height: 288px;
+            width: 708px;
+            line-height: 0;
+            margin: 0 auto;
+            border:1px dashed #000;
+        }
+
+        .container span {
+            width: 38px;
+            display: inline-block;
+            border: 1px solid #fff;
+            height: 38px;
+            background-color: none;
+            transition: all 0.3s;
+            overflow: hidden;
+            margin-left: -1px;
+            margin-bottom: -1px;
+            position: relative;
+        }
+
+        .container span i {
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            transform: skewx(-25deg);
+            -o-transform: skewx(-25deg);
+            -moz-transform: skewx(-25deg);
+            -webkit-transform: skewx(-25deg);
+            background-image: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .5), rgba(255, 255, 255, 0));
+            z-index: 10;
+            transition: all .3s;
+        }
+
+        .container span img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            max-width: none;
+            position: relative;
+            display: none;
+        }
+
+        .container span:hover>i {
+            animation: .5s faceHover;
+        }
+
+        @keyframes faceHover {
+            from {
+                left: -100%;
+            }
+
+            to {
+                left: 100%;
+            }
+        }
+
+        .you:after {
+            content: "YOU";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #2ccfa4;
+            line-height: 38px;
+            font-size: 14px;
+            color: #FFF;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <script>
+
+        const $ = selectors => document.querySelector(selectors);
+        const $all = selectors => document.querySelectorAll(selectors);
+        // const imgList1 = Array.from({ length: 14 }, (v, i) => `./成员/${i+1}.jpg`);
+        // const imgList2 = Array.from({ length: 14 }, (v, i) => `./成员/${i+1}.jpg`);
+        // const imgList3 = Array.from({ length: 14 }, (v, i) => `./成员/${i+1}.jpg`);
+        const imgList1 = Array.from({ length: 14 }, (v, i) => `https://dummyimage.com/100x100`);
+        const imgList2 = Array.from({ length: 14 }, (v, i) => `https://dummyimage.com/100x100`);
+        const imgList3 = Array.from({ length: 14 }, (v, i) => `https://dummyimage.com/100x100`);
+        const imgList = imgList1.concat(imgList2, imgList3);
+
+        // size of panel
+        const LEN = 18;
+        const HEI = 7;
+        const SUM = LEN * HEI;
+
+        const faceList = Array.from({ length: SUM }, () => {
+            const face = document.createElement("span");
+            const img = document.createElement("img");
+            const i = document.createElement("i");
+            i.style.left = '-100%';
+            face.append(img);
+            face.append(i);
+
+            return face;
+        });
+
+        const box = document.createElement("div");
+        box.classList.add('container');
+        faceList.forEach(ele => {
+            box.append(ele);
+        });
+        document.body.appendChild(box);
+        
+
+        let targetTextArr =[
+            '                    ',
+            ' xxxx  xxxx  xxxx   ',
+            ' x     x     x      ',
+            ' x xx  xxxx  xxxx   ',
+            ' x  x  x     x      ',
+            ' xxxx  x     xxxx   ',
+            '                    '
+        ];
+        let avatarCharacterArr = [];
+        targetTextArr.forEach((v, i) => {
+            for (let j = 1; j < v.length; j++) {
+                if (v[j] === 'x') {
+                    avatarCharacterArr.push(i * LEN + j);
+                }
+            }
+        });
+        const textArr = [].concat(avatarCharacterArr);
+        const imgArr = [].concat(avatarCharacterArr);
+
+        const imgEles = $all('img');
+        const spanEles = $all('span');
+        const iEles = $all('i');
+
+        const timer = setInterval(() => {
+            const length = textArr.length;
+            const showNumber = textArr.splice(Math.random() * length, 1);
+            spanEles[showNumber].style.backgroundColor = '#2ccfa4';
+            imgEles[showNumber].src = imgList.splice(Math.floor(Math.random() * imgList.length), 1);
+            iEles[showNumber].style.left = '100%';
+            if (!textArr.length) {
+                clearInterval(timer);
+                showImg();
+            }
+        }, 25);
+
+        const imgSrc = Array.from({ length: 42 }, (v, i) => i);
+
+        const showImg = () => {
+            const imgTimer = setInterval(() => {
+                const length = imgArr.length;
+                const [showNumber] = imgArr.splice(Math.random() * length, 1);
+                const [imgIndex] = imgSrc.splice(Math.random() * imgSrc.length, 1);
+
+                imgEles[showNumber].style.display = 'inline';
+                spanEles[showNumber].style.backgroundColor = '#fff';
+                iEles[showNumber].style.left = '-100%';
+
+                if (imgArr.length === 0) {
+                    spanEles[showNumber].classList.add('you');
+                    clearInterval(imgTimer);
+                }
+            }, 25);
+        }
+    </script>
+
+
+</body>
+
+</html>
