@@ -1,2 +1,2 @@
 # team-avatars
-类似fed团队头像布局
+gfe头像布局
